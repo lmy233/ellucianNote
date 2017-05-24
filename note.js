@@ -129,6 +129,7 @@ promise: an object that defines a method called then() and represents a value th
 ----------------------------------------------------------------------------------------------------
 
 git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Git+Reference
+		https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository
 	- version control system
 	-takes snapshots of a project and stores as unique vers
 	- ls - la
@@ -157,6 +158,9 @@ git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Gi
 		-push changes to remote repository so people can have access to it
 			-git pull <= pull any changes that have been made since last pull
 			-git push
+				//push an existing repository from the command line
+					git remote add origin https://github.com/lmy233/ellucianNote.git
+					git push -u origin master
 
 
 
