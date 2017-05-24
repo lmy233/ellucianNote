@@ -140,7 +140,7 @@ git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Gi
 		git add --all <= picks up new, modified, and deleted files for staging
 				- git add <file>
 		git reset <file> <= remove files from staging
-		git commit -m "my commit message" <= commit your staged items
+		git commit -m "my commit message" <= commit your staged items (commit locally)
 		git status
 		git log <= view commit history
 			    - (n) : how last n commits
@@ -148,12 +148,15 @@ git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Gi
 			    - git config --global --edit
 			    - git commit --amend --reset-author
 
-		git clone <url><where> <= . means current directory
-				- git clone ../remote_repository.git
+		git clone <url><where> <= . means in current directory
+				- git clone ../remote_repository.git .
 
 
 		git diff <= show changes that made to the code/ file
 
+		-push changes to remote repository so people can have access to it
+			-git pull <= pull any changes that have been made since last pull
+			-git push
 
 
 
