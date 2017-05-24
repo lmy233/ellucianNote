@@ -157,7 +157,7 @@ git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Gi
 
 		-push changes to remote repository so people can have access to it
 			-git pull <= pull any changes that have been made since last pull
-			-git push
+			-git push <REMOTENAME> <BRANCHNAME> <= usually: git push origin master 
 				//push an existing repository from the command line
 					git remote add origin https://github.com/lmy233/ellucianNote.git
 					git push -u origin master
