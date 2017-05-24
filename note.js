@@ -131,12 +131,29 @@ promise: an object that defines a method called then() and represents a value th
 git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Git+Reference
 	- version control system
 	-takes snapshots of a project and stores as unique vers
-	-
+	- ls - la
 	-comand line:
+		git config --list / --global user.name "" / --global user.email ""
+		git help <verb> or git <verb> --help
 		git init <= creates a skeleton local repository in the current directory
+		rm -rf .git <= stop tracking the current project/directory
 		git add --all <= picks up new, modified, and deleted files for staging
+				- git add <file>
+		git reset <file> <= remove files from staging
 		git commit -m "my commit message" <= commit your staged items
 		git status
+		git log <= view commit history
+			    - (n) : how last n commits
+			    - --since, --after : Limit the commits to those made after the specified date.
+			    - git config --global --edit
+			    - git commit --amend --reset-author
+
+		git clone <url><where> <= . means current directory
+				- git clone ../remote_repository.git
+
+
+		git diff <= show changes that made to the code/ file
+
 
 
 
