@@ -136,7 +136,7 @@ git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Gi
 		git init <= creates a skeleton local repository in the current directory
 		git add --all <= picks up new, modified, and deleted files for staging
 		git commit -m "my commit message" <= commit your staged items
-
+		git status
 
 
 
