@@ -1,6 +1,14 @@
 //project summarize:
 https://ellucian.app.box.com/s/95qz2s29s35mp3481ufjgkjoi3wjdy9v
 
+command line:
+	mkdir getting-started-with-hapi-js-part-1 && cd $_
+		|-> $_ means use the last argument of the last command.
+		|-> So the cmd line will turn to ... && cd getting-started-with-hapi-js-part-1
+
+
+
+----------------------------------------------------------------------------------------------------
 // https://expressjs.com/en/api.html
 use() : call use when need to apply middlewares or want to use modular architecture
 get() : request/retrieve data from a resource (after the port)
@@ -130,6 +138,7 @@ promise: an object that defines a method called then() and represents a value th
 
 git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Git+Reference
 		https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository
+	**always pull from master before commit
 	- version control system
 	-takes snapshots of a project and stores as unique vers
 	- ls - la
@@ -160,9 +169,177 @@ git		https://confluence.ellucian.com/pages/viewpage.action?spaceKey=EIM&title=Gi
 			-git push <REMOTENAME> <BRANCHNAME> <= usually: git push origin master 
 				//push an existing repository from the command line
 					git remote add origin https://github.com/lmy233/ellucianNote.git
-					git push -u origin master
+					git push -u origin master <= after this we only need push & pull
 
-					TESTT
+		-branch:
+			git branch <= w/o branch name == list out all local branch || git branch -a
+			git branch <BRANCHNAME> <= create a branch
+			//create new branch, head node still points to orignal/current branch, not the new branch
+			git checkout <BRANCHNAME> <= switched to branch BRANCHNAME
+				- use git push - u origin <BRANCHNAME> <= to associate local and master branch
+			git branch --merged <= to see merge branches
+			git merge <BRANCHNAME> <= to merge with master (after everything is done, pull first!)
+			//after merging with master -> no longer need that branch
+			git branch -d <BRANCH> <= deleted the branch LOCALLY (do git branch --merged to check first)
+			git push origin --delete <BRANCHNAME> <= delete branch remotely 
+													(origin = name of remote repo)
+		Steps:
+			-//on master branch, want to work on specific function
+				git branch func //create branch named func
+			-//switch to that branch
+				git checkout func 
+			-//in func branch, working in func branch...make changes
+				git status
+				git add -A 				//add all to staging directory
+				git commit -m "message" //commit changes
+				git push -u origin func //push that branch to the remote repo
+			-//all test, changes when well, and done -> ready to merge with master
+				git checkout master		//checkout/ change to master branch
+				git pull origin master 	//pull all changes that been made from others
+				git merge func 			//marge func branch with master
+				git push origin master	//push changes to master
+			-//go through process of deleting func branch since we no longer need that func
+----------------------------------------------------------------------------------------------------
+
+markdown: 	cheatsheet: https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf
+	- way to write content for the web
+	
+	-italic: surround the phase w/ _ or *
+		_sentence_
+	-bold: surround w/ ** or _ _
+		**phase** or __phase__
+	-both:
+		**_both_**
+	-header (six types): #
+		# Header One (biggest)
+		### header 3 (smaller)
+	-two different link types
+		+ inline link: create by wrap the link text in [ ] and actual link in ()
+			- [Visit GitHub!](www.github.com) -->only show Visit GitHub! to click on
+		+ reference: 
+			- advantage: multiple links to the same place only need to be updated once
+			ex:
+				Heres [a link to something else][another place].
+				Heres [yet another link][another-link].
+	     		And now back to [the first link][another place].
+
+	     		[another place]: www.github.com //only need to update here
+	     		[another-link]: www.google.com
+
+	- images: (same with links but with ! in front)
+		- ![](URL-link-to-image.jpg)
+
+	- create a block quote w/: >
+	- list (unorder): * ...
+	- list (order): numbers with tab
+	- new lines (soft break): 2 space
+----------------------------------------------------------------------------------------------------
+
+babel.js
+	-https://github.com/babel/example-node-server
+	-command line: https://babeljs.io/docs/usage/cli/
+	-an ECMAScript 6 to ECMAScript 5 compiler -->allows to use use ES6 features 
+			in your projects and then compiles ES5 for you to use in production
+			-need Babel because browser vendors are slow to adopt new language features, 
+				thus browser support for ES6 is poor (for now)
+	-configurable compiler translate JS to JS (unlike a compiler which translates 
+			high level application code into lower level/byte code)
+	-
+
+	-pros / cons of transpiling code from ES6 to ES5
+		+pro: 
+			-plug in for customer features
+			-start using ES6 (w/ shorter syntaxes more features) now w/o waiting for browser support
+		+con:
+			-transpiling process adds extra overhead to your build process -->compiler is slow
+			-output is still ES5 -->not accomplish anything
+			-where is the bug? in ES6 or ES5 code
+----------------------------------------------------------------------------------------------------
+
+hapi: npm install --save hapi 		after npm init	
+	https://hapijs.com/api
+	**self note**: 	-tutorial getting-started-with-hapi use ES6 syntax & babel to transpiling
+					-myHAPIproject use normal ES5 syntax
+	-web framework for building web applications, APIs and services
+	-terms:
+		+server: the root object which contains everything about the web application;
+		+connection: an instance of a connection, usually a host and a port 
+								where the requests will come to;
+		+route: a URI within a connection telling the server which funcs to execute when;
+
+	-use:	//create a new hapi server object:
+			const Hapi = require('hapi');
+
+			const server = new Hapi.Server();
+			//add a connection to the server & passing in a port number to listen on &/or host name
+			server.connection({ port: 3000, host: 'localhost' });
+	- 		//adding routes (can be more than one routes)
+			server.route({
+			    method: 'GET',
+			    path: '/',
+			    //request param represents entire request: query strings, URL parameters, & payload 
+			    handler: function (request, reply) {//(if it's a POST/PUT request)
+			        reply('Hello, world!');//reply object helps in sending a reply back to the client
+			    }
+			});
+
+			server.route({
+			    method: 'GET',
+			    path: '/{name}',
+			    handler: function (request, reply) {
+			        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+			    }
+			});
+			//code to start server
+			server.start((err) => {
+
+			    if (err) {
+			        throw err;
+			    }
+			    console.log(`Server running at: ${server.info.uri}`);
+			});
+
+	- inert: a plugin to serve a static page
+			install w/: npm install --save inert 
+			//**continue from the above code**
+			//server.register(): adds the inert plugin to Hapi application
+			server.register(require('inert'), (err) => { //anonymous callback is require
+			//if something goes wrong, anonymous function is invoked, receive err 
+			    if (err) {
+			        throw err;	//& throw that error
+			    }
+			//put the routing callback function inside of registering inert bc we need to
+			//insure that inert is registered before we use it to render the static page
+			    //server.route() command registers the /hello route, 
+			    server.route({		//which tells your server to 
+			        method: 'GET',	//accept GET requests to /hello and 
+			        path: '/hello',
+			        handler: function (request, reply) {
+			            reply.file('./public/hello.html');//reply w/ contents of hello.html file
+			        }
+			    });
+			});
+
+	- using plugins:
+		-are an object with a register function that has the signature
+							 function (server, options, next){...}. 
+		-That register function{} then has an attributes object attached to it to provide hapi 
+			with some additional information about the plugin, such as name and version.
+
+			const myPlugin = {
+			    register: function (server, options, next) {
+			        next();
+			    }
+			};
+
+			myPlugin.register.attributes = {
+			    name: 'myPlugin',
+			    version: '1.0.0'
+			};
+----------------------------------------------------------------------------------------------------
+
+
+
 
 
 
