@@ -320,7 +320,7 @@ hapi: npm install --save hapi 		after npm init
 			    });
 			});
 
-	- using plugins:
+	- using plugins: (need to .register all plugins)
 		-are an object with a register function that has the signature
 							 function (server, options, next){...}. 
 		-That register function{} then has an attributes object attached to it to provide hapi 
@@ -336,6 +336,65 @@ hapi: npm install --save hapi 		after npm init
 			    name: 'myPlugin',
 			    version: '1.0.0'
 			};
+		- use vision module to render tepmlate, add server.views()
+				server.views({
+				    engines: {
+				        html: require('handlebars')
+				    },
+				    path: Path.join(__dirname, 'templates')
+				});
+
+		-helper: 
+			- create a .js file that have:
+				module.exports = function(context) {
+				    var query = context.data.root.query;
+				    return query.name + query.suffix;
+				}
+			- and in server.views({...}) add:
+				helpersPath: '<name of the helper file w/o .js>'
+		
+		- cookies: (makeMeHapi lesson 12)
+
+		-JOI: -->Object schema description language and validator for JavaScript objects.
+			-using a Joi object to specify highly customizable validation rules in
+								paths, request payloads, and responses
+			-npm install joi and require in .js files (makeMeHapi lesson 10)
+				config: {
+		    		validate: {
+		       			payload: Joi.object({...}).with(...).without();
+		       		}
+		       	}
+		    - ex: https://github.com/hapijs/joi
+		    	const Joi = require('joi');
+
+				const schema = Joi.object().keys({
+					//username: require a string,must contain only alphanumeric char >3 and < 30
+				    username: Joi.string().alphanum().min(3).max(30).required(),
+				    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+				    access_token: [Joi.string(), Joi.number()],
+				    birthyear: Joi.number().integer().min(1900).max(2013),
+				    email: Joi.string().email()
+				    //with() == user name must be accompanied by birthyear
+				    //without() == password cannot appear together with access_token
+				}).with('username', 'birthyear').without('password', 'access_token');
+
+				// Return result.
+				const result = Joi.validate({ username: 'abc', birthyear: 1994 }, schema);
+				// result.error === null -> valid
+
+				//can also pass a callback which will be called synchronously w/ validation result.
+				Joi.validate({ username: 'abc', birthyear: 1994 }, 
+					schema, 
+					function (err, value) { });  
+					// err === null -> vali
+
+		- HOEK:
+			- library contains some common functions used within the hapi ecosystem
+		- Lodash _:
+
+
+		-boom:  set of utilities for returning HTTP errors.
+			-https://github.com/hapijs/boom
 ----------------------------------------------------------------------------------------------------
 
 
